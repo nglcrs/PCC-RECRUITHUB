@@ -1,0 +1,2733 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Applicant Management System</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      min-height: 100vh;
+      height: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+    .login-wrapper {
+      display: flex;
+      min-height: 100vh;
+      width: 100%;
+    }
+    .main-screen {
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      width: 100%;
+      background-image: url('crown_jewel.jpg');
+      background-blend-mode: overlay;
+      background-color: rgba(23, 23, 23, 0.5);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    /* Top Navigation Bar */
+    .home-top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .home-logo-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .home-logo-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .home-logo-text {
+      color: white;
+      font-weight: 700;
+      font-size: 0.9rem;
+      line-height: 1.1;
+    }
+
+    .home-nav-links {
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    .home-nav-link {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .home-nav-link:hover {
+      text-decoration: underline;
+    }
+    .home-hero-content {
+      position: relative;
+      z-index: 2;
+      flex: 1; /* takes available space */
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end; /* aligns content to bottom */
+      padding: 2rem 0;
+    }
+
+    .home-main-heading {
+      font-family: 'Times New Roman', Times, serif;
+      padding: 0 2.5rem 2rem; /* bottom padding adds space before white section */
+      z-index: 1;
+      text-align: left;
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.3;
+      color: white;
+      /* Remove position: absolute and top: 50% — that's what pushes it to the middle! */
+      position: relative;
+      margin-top: auto; /* pushes it down just above the white part */
+      margin-bottom: 0;
+    }
+    .home-bottom-section {
+      background: white;
+      padding: 2rem 2.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    .home-description {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: #333;
+      margin-bottom: 1.25rem;
+    }
+    .home-buttons-row {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+    .home-apply-btn {
+      background: #900;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .home-apply-btn:hover {
+      background: #b00;
+    }
+    .left-bg {
+      display: flex;
+      width: 25%;
+      background-image: url('entrance_pcc_copy.jpg');
+      background-blend-mode: overlay;
+      background-color: rgba(23, 23, 23, 0.5);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+    }
+    .right-overlay {
+      display: flex;
+      width: 75%;
+      background-image: url('background_copy.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    .logo-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+    .system-title {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+      color: #1a1a1a;
+      letter-spacing: 1px;
+    }
+    .selection-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      animation: fadeIn 0.3s ease;
+    }
+    .button-box {
+      background: #900;
+      padding: 2rem;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      width: 100%;
+      max-width: 320px;
+    }
+    .main-btn {
+      padding: 1rem;
+      border: none;
+      border-radius: 6px;
+      background: #e8e8e8;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .main-btn:hover {
+      background: #fff;
+    }
+    .admin-form-screen, .applicant-form-screen {
+      font-family: Arial, Helvetica, sans-serif;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 380px;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .form-card {
+      background: #922222;
+      padding: 1.75rem;
+      border-radius: 12px;
+      color: white;
+      width: 100%;
+    }
+    .form-title {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 1rem;
+      font-weight: normal;
+      text-align: center;
+      margin-bottom: 1.75rem;
+      opacity: 0.9;
+    }
+    .form-label {
+      display: block;
+      margin: 1rem 0 0.4rem;
+      font-size: 0.9rem;
+    }
+    .form-input {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.95rem;
+    }
+    .forgot-link {
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      text-align: right;
+    }
+    .forgot-link a {
+      color: white;
+      text-decoration: underline;
+    }
+    .button-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+    }
+    .form-btn {
+      padding: 0.5rem 1.25rem;
+      border: none;
+      border-radius: 4px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .cancel-btn {
+      background: #ddd;
+      color: #333;
+    }
+    .login-btn {
+      background: #eee;
+      color: #111;
+    }
+    .signup-text {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: 0.75rem;
+    }
+    .signup-text a {
+      color: white;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+    .forgot-pass-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 380px;
+      animation: fadeIn 0.3s ease;
+    }
+    .button-row-2 {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.25rem;
+      width: 100%;
+    }
+    .back-btn {
+      padding: 0.6rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      background: #ddd;
+      color: #333;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .reset-btn {
+      padding: 0.6rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      background: #eee;
+      color: #111;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .change-pass-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 380px;
+      animation: fadeIn 0.5s ease;
+    }
+    .applicant-page-container {
+      display: none;
+      min-height: 100vh;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      overflow-y: auto;
+    }
+    .admin-page-container {
+      display: none;
+      min-height: 100vh;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10;
+      overflow-y: auto;
+    }
+    .sidebar {
+      width: 260px;
+      background:linear-gradient(to bottom, #D13737 2%, #9D0606 98%);
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 0;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      overflow-y: auto;
+    }
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0 1rem 2rem;
+      background: #D63131;
+    }
+    .logo-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 25%;
+      flex-shrink: 0;
+    }
+    .sidebar-header small {
+      opacity: 1.0;
+      font-size: 0.75rem;
+    }
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+    }
+    .nav-item {
+      color: white;
+      text-decoration: none;
+      padding: 0.85rem 1.5rem;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.2s;
+    }
+    .nav-item.active {
+      background: #700;
+    }
+    .nav-item:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    .main-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin-left: 260px;
+      height: auto;
+      overflow-y: visible;
+    }
+    .top-bar {
+      width: 100%;
+      height: 135px;
+      background-image: url('crown_jewel_copy.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+      box-sizing: border-box;
+    }
+    .top-bar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+    .top-left, .top-right {
+      position: relative;
+      z-index: 2;
+    }
+    .top-left a {
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+      text-decoration: none;
+    }
+    .top-left-icon {
+        width: 25px;
+        height: 25px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: nowrap;
+      margin-left: 1rem;
+    }
+    .profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .top-right h1 {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      white-space: nowrap;
+      color: white;
+    }
+    .logout-btn {
+      background: transparent;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      flex-shrink: 0;
+    }
+    .logout-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .content-gradient {
+      flex: 1;
+      background-image: url('background_copy.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      min-height: calc(100vh - 135px);
+    }
+    .tab-content {
+      font-family: Arial, Helvetica, sans-serif;
+      padding: 2rem;
+      color: #333;
+      animation: fadeIn 0.3s ease;
+    }
+    .tab-content h2 {
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 32px;
+      margin-bottom: 1.5rem;
+      color: white;
+    }
+    .nav-icon {
+        width: 25px;
+        height: 25px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+    .content-grid {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .stats-row {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      padding-bottom: 10px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #b81e32 0%, #900 100%);
+      padding: 1.75rem 1.5rem;
+      border-radius: 12px;
+      min-width: 370px;
+      flex: 1;
+      position: relative;
+      margin-bottom: 15px;
+      color: white;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 15px;
+      right: 15px;
+      height: 50px;
+      background: #ffffff;
+      border-radius: 0 0 12px 12px;
+      z-index: -1;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-card h3, .big-number, .card-footer {
+      position: relative;
+      z-index: 2;
+    }
+
+    .stat-card h3 {
+      text-align: center;
+    }
+
+    .big-number {
+      font-size: 5rem;
+      font-weight: bold;
+      color: #ffffff;
+      margin: 0.5rem 0 1rem;
+      line-height: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .trend {
+      font-size: 0.85rem;
+      opacity: 0.85;
+      color: #ffffff;
+    }
+
+    .dashboard-content-wrapper {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1rem;
+      align-items: start;
+      margin-top: 1.5rem;
+    }
+    .left-tables-column {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .right-sidebar-column {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem 0.5rem;
+      color: white;
+      font-size: 1.3rem;
+    }
+    .table-wrapper {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .table-top-header {
+      background: #D5D3D3;
+      padding: 0.85rem;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 0.9rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    .data-table th {
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .data-table tfoot td {
+      border-bottom: none;
+      padding: 0.75rem 1rem;
+    }
+
+    .btn-view-more {
+      background: #e9ecef;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .filter-bar {
+      background: #f5f5f5;
+      padding: 1rem;
+      display: flex;
+      gap: 2rem;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .filter-group label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #333;
+      text-transform: uppercase;
+      min-width: 80px;
+    }
+
+    .search-input {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 220px;
+    }
+
+    .status-select {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      min-width: 140px;
+      flex-direction: row;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 0.4rem 0.9rem;
+      background: #ffd900;
+      color: #000;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+    .btn-edit {
+      background: #F4DB21;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 5px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-right: 0.4rem;
+    }
+
+    .btn-archive {
+      background: #63CE76;
+      color: black;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-details {
+      background: #63CE76;
+      color: black;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .calendar-section {
+      background: #AE2727;
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .calendar-header {
+      color: white;
+      text-align: center;
+      padding-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    .calendar-days-header {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+    .calendar-days-header span {
+      font-size: 0.6rem;
+      color: white;
+      padding: 0.3rem;
+      text-align: center;
+      opacity: 0.85;
+    }
+    .calendar-dates {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+    .calendar-date, .calendar-dates span {
+      background: white;
+      color: black;
+      border-radius: 5px;
+      text-align: center;
+      padding: 0.75rem 0.25rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .interviews {
+      background: white;
+      border-radius: 10px;
+      color: black;
+    }
+    .interview-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .interview-date {
+      background: #AE2727;
+      color: white;
+      width: 70px;
+      text-align: center;
+      border-radius: 10px;
+      padding: 0.5rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .interview-text h4 {
+      margin: 0 0 0.25rem 0;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: black;
+    }
+
+    .interview-text p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #333;
+    }
+    .pos-grid-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .pos-left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .pos-right-col {
+      position: sticky;
+      top: 1rem;
+    }
+    .table-wrapper {
+      background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .table-top-header {
+      background: #D5D3D3;
+      padding: 0.8rem 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .pos-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .pos-table th,
+    .pos-table td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+      font-size: 0.9rem;
+    }
+
+    .pos-table th {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .btn-add-pos {
+      background: #e9ecef;
+      border: none;
+      padding: 0.6rem 1rem;
+      margin: 0.8rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-status-active {
+      background: #28c746;
+      color: white;
+      border: none;
+      padding: 0.35rem 0.8rem;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    .btn-edit {
+      background: #ffd900;
+      color: #000;
+      border: none;
+      padding: 0.35rem 0.8rem;
+      border-radius: 4px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-right: 0.3rem;
+    }
+
+    .btn-delete {
+      background: #f44336;
+      color: white;
+      border: none;
+      padding: 0.35rem 0.8rem;
+      border-radius: 4px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-right: 0.3rem;
+    }
+
+    .btn-archive {
+      background: #64b5f6;
+      color: #000;
+      border: none;
+      padding: 0.35rem 0.8rem;
+      border-radius: 4px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .history-search-bar {
+      padding: 1rem;
+      background: #f8f8f8;
+    }
+
+    .history-search-input {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .history-tabs {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .hist-tab {
+      padding: 0.7rem 1.2rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .hist-tab.active {
+      border-bottom: 2px solid #b81e32;
+      color: #b81e32;
+    }
+
+    .history-content {
+      padding: 1rem;
+    }
+
+    .history-table td {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .btn-unarchive {
+      background: #ff9800;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      margin-left: 0.5rem;
+      cursor: pointer;
+    }
+
+    .btn-restore {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .history-log-title {
+      margin: 1.5rem 0 0.5rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    .log-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.5rem;
+    }
+
+    .log-table th,
+    .log-table td {
+      padding: 0.6rem;
+      border-bottom: 1px solid #eee;
+      font-size: 0.85rem;
+    }
+    .form-card {
+      background: #AE2727;
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+
+    .form-card-title {
+      color: white;
+      margin-top: 0;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+    }
+
+    .form-card label {
+      display: block;
+      margin: 1rem 0 0.3rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .form-card input,
+    .form-card textarea {
+      width: 100%;
+      padding: 0.7rem;
+      border: none;
+      border-radius: 4px;
+      background: white;
+      box-sizing: border-box;
+    }
+
+    .sub-heading {
+      margin: 0.5rem;
+      font-size: 0.9rem;
+      color: white;
+    }
+    .form-buttons {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-save-changes {
+      background: white;
+      color: black;
+      border: none;
+      padding: 0.8rem 1.2rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      flex: 1;
+    }
+
+    .btn-clear-form {
+      background: white;
+      color: black;
+      border: none;
+      padding: 0.8rem 1.2rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      flex: 1;
+    }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 450px;
+    }
+
+    .modal-box h3 {
+      margin-top: 0;
+      color: #b81e32;
+      text-align: center;
+    }
+
+    .modal-box input,
+    .modal-box textarea {
+      width: 100%;
+      padding: 0.7rem;
+      margin: 0.4rem 0 1rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+    }
+
+    .btn-cancel {
+      background: #e9ecef;
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .btn-save {
+      background: #b81e32;
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .applicant-grid-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .applicant-table-wrapper {
+      background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .applicant-search-bar {
+      padding: 1rem;
+      background: #f8f8f8;
+    }
+    .applicant-search-input {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    .applicant-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .applicant-table th,
+    .applicant-table td {
+      padding: 0.7rem 0.9rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+      font-size: 0.85rem;
+    }
+    .applicant-table th {
+      background: #f0f0f0;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+    .btn-edit-yellow {
+      background: #ffd900;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn-details-green {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    /* ===== RIGHT PROFILE CARD ===== */
+    .applicant-profile-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #ddd;
+      margin-bottom: 1rem;
+    }
+    .profile-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .profile-id {
+      color: #666;
+      font-size: 0.9rem;
+      margin: 0.3rem 0 1.5rem;
+    }
+    .status-section h4 {
+      margin: 1rem 0 0.5rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      color: #555;
+    }
+    .status-bar-pending {
+      background: #ccc;
+      padding: 0.6rem;
+      border-radius: 4px;
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .applicant-home-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      width: 100%;
+      min-height: calc(100vh - 4rem);
+      padding: 1rem;
+      box-sizing: border-box;
+    }
+
+    .app-stat-card {
+      display: flex;
+      align-items: stretch;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+      min-height: 250px;
+      width: 100%;
+    }
+    .app-stat-icon {
+      width: 180px;
+      background: #b81e32;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      flex-shrink: 0;
+    }
+
+    .app-stat-icon img {
+      width: 140px;
+      height: 160px;
+      object-fit: contain;
+      display: block;
+    }
+    .app-stat-content {
+      flex: 1;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: #ffffff;
+      color: #b81e32;
+      border-left: 2px solid #eee; /* Separator line */
+    }
+
+    .app-stat-number {
+      font-size: 8rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .app-stat-label {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-top: 5rem;
+      line-height: 1.4;
+    }
+
+    .welcome-heading {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: white;
+      margin: 1rem 0 0 1rem;
+    }
+
+    #applicant-tab-home {
+      width: 100%;
+      min-height: 100%;
+      box-sizing: border-box;
+    }
+        /* ===== IMPROVED LAYOUT — ADD THIS AT THE END ===== */
+    .pos-grid-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 1.5rem;
+      align-items: start;
+      width: 100%;
+    }
+    .pos-left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      width: 100%;
+    }
+    .pos-right-col {
+      position: sticky;
+      top: 1rem;
+      width: 100%;
+    }
+    .form-card {
+      background: #AE2727;
+      border-radius: 8px;
+      padding: 1.5rem;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .tab-content {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 2rem;
+    }
+    .pos-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .table-wrapper {
+      width: 100%;
+      box-sizing: border-box;
+    }
+        /* ===== APPLICANTS TAB — EXACT DESIGN ===== */
+    #admin-tab-applicants {
+      color: white;
+    }
+    #admin-tab-applicants h2 {
+      display: none; /* Hide default heading — design has top bar instead */
+    }
+    .applicant-page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .applicant-page-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+    }
+    .applicant-search-box {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: 6px;
+      background: #f0f0f0;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .applicant-full-table-wrapper {
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    .applicant-full-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .applicant-full-table th {
+      background: #f0f0f0;
+      padding: 0.9rem 1rem;
+      text-align: left;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      color: #333;
+      border-bottom: 2px solid #ddd;
+    }
+    .applicant-full-table td {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid #eee;
+      font-size: 0.9rem;
+      color: #333;
+    }
+    .applicant-full-table tr:hover {
+      background: #f9f9f9;
+    }
+    .btn-edit-yellow {
+      background: #ffd900;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+    .btn-details-green {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .applicant-profile-card {
+      background: #b81e32;
+      border-radius: 8px;
+      padding: 1.5rem;
+      color: white;
+    }
+    .profile-top-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #ddd;
+    }
+    .profile-info h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .profile-id {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin: 0.25rem 0 0 0;
+    }
+    .status-section h4 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      margin: 1.2rem 0 0.5rem;
+      opacity: 0.85;
+    }
+    .status-bar-pending {
+      background: #ccc;
+      padding: 0.7rem;
+      border-radius: 4px;
+      text-align: center;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+    /* Apply Date stretches to fill space */
+    .date-col {
+      width: 22%;
+    }
+    /* CURRENT STATUS column — header centered, buttons align under it */
+    .status-header {
+      text-align: center;
+    }
+    .status-buttons-col {
+      text-align: center;
+      white-space: nowrap;
+    }
+    /* Buttons styling */
+    .btn-edit-yellow,
+    .btn-details-green {
+      display: inline-block;
+      vertical-align: middle;
+      border: none;
+      border-radius: 4px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+    }
+    .btn-edit-yellow {
+      background: #ffd900;
+      color: #000;
+      margin-right: 0.5rem;
+    }
+    .btn-details-green {
+      background: #4caf50;
+      color: #fff;
+    }
+    /* ===== JOB VACANCIES — EXACT DESIGN ===== */
+    #applicant-tab-vacancies {
+      padding: 2rem;
+      color: #333;
+    }
+    #applicant-tab-vacancies h2 {
+      display: none;
+    }
+    .vacancies-page-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1.5rem;
+    }
+    .vacancies-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .job-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.25rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+    .job-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0 0 0.3rem 0;
+      color: #1a1a1a;
+    }
+    .job-dept {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 0.8rem;
+    }
+    .job-status-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .status-label {
+      font-size: 0.85rem;
+      color: #555;
+    }
+    .status-badge-active {
+      background: #4caf50;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+    }
+    .status-badge-closed {
+      background: #f44336;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+    }
+    .job-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn-apply {
+      background: #900;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      flex: 1;
+    }
+    .btn-save {
+      background: #e0e0e0;
+      color: #333;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      flex: 1;
+    }
+    .btn-apply.applied {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-screen" id="homePage">
+    <nav class="home-top-nav">
+      <div class="home-logo-group">
+        <img src="logo.jpg" alt="PCC RecruitHub Logo" class="home-logo-icon">
+        <div>
+          <span class="home-logo-text">PCC<br>RECRUITHUB</span>
+        </div>
+      </div>
+      <div class="home-nav-links">
+        <a href="#" class="home-nav-link active"><b>HOME</b></a>
+        <a href="#" class="home-nav-link"><b>ACADEMICS</b></a>
+        <a href="#" class="home-nav-link"><b>ABOUT</b></a>
+      </div>
+    </nav>
+
+    <!-- Background Image & Heading -->
+    <div class="home-hero-content">
+      <h1 class="home-main-heading">Building the PCC Community,<br>One Hire at a Time</h1>
+    </div>
+
+    <!-- White Bottom Section -->
+    <div class="home-bottom-section">
+      <p class="home-description">
+        Welcome to PCC RecruitHub! The official Job Applicant Management System of Pasig Catholic College. 
+        This platform is designed to make hiring easier from receiving applications to final selection. 
+        It keeps all information in one place for HR staff to efficiently track candidates, manage interviews, 
+        and find the best individuals to join our growing PCC community.
+      </p>
+      <div class="home-buttons-row">
+        <button class="home-apply-btn" onclick="goToLogin()">⬅ APPLY NOW!</button>
+        <button class="home-apply-btn" onclick="goToLogin()">APPLY NOW! ➡</button>
+      </div>
+    </div>
+  </div>
+  <div class="login-wrapper" id="loginWrapper" style="display: none;">
+    <div class="left-bg"></div>
+    <div class="right-overlay">
+ 
+      <div class="selection-screen" id="selectionScreen">
+        <img src="logo.jpg" alt="PCC RecruitHub Logo" class="logo-img">
+        <h1 class="system-title">PCC RecruitHub</h1>
+        <div class="button-box">
+          <button class="main-btn" onclick="showApplicantForm()">LOG-IN AS APPLICANT</button>
+          <button class="main-btn" onclick="showAdminForm()">LOG-IN AS ADMIN</button>
+        </div>
+      </div>
+      <div class="admin-form-screen" id="adminFormScreen">
+        <img src="logo.jpg" alt="PCC RecruitHub Logo" class="logo-img">
+        <h1 class="system-title">PCC RecruitHub</h1>
+        <div class="form-card">
+          <h3 class="form-title">Admin</h3>
+          <label class="form-label">Full Name</label>
+          <input type="text" id="admin-fullname" class="form-input">
+          <label class="form-label">Email</label>
+          <input type="email" id="admin-email" class="form-input">
+          <label class="form-label">Password</label>
+          <input type="password" id="admin-password" class="form-input">
+          <div class="forgot-link" onclick="ForgotPassword()">
+            <a href="#">Forgot Password</a>
+          </div>
+          <div class="button-row">
+            <button class="form-btn cancel-btn" onclick="goBack()">Cancel</button>
+            <button class="form-btn login-btn" onclick="LoginAdmin()">Log-In</button>
+          </div>
+          <div class="signup-text">
+            <p>Don't have an account? <a href="#">Sign-Up</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="applicant-form-screen" id="applicantFormScreen">
+        <img src="logo.jpg" alt="PCC RecruitHub Logo" class="logo-img">
+        <h1 class="system-title">PCC RecruitHub</h1>
+        <div class="form-card">
+          <h3 class="form-title">Applicant</h3>
+          <label class="form-label">Full Name</label>
+          <input type="text" id="applicant-fullname" class="form-input">
+          <label class="form-label">Email</label>
+          <input type="email" id="applicant-email" class="form-input">
+          <label class="form-label">Password</label>
+          <input type="password" id="applicant-password" class="form-input">
+          <div class="forgot-link" onclick="ForgotPassword()">
+            <a href="#">Forgot Password</a>
+          </div>
+          <div class="button-row">
+            <button class="form-btn cancel-btn" onclick="goBack()">Cancel</button>
+            <button class="form-btn login-btn" onclick="LoginApplicant()">Log-In</button>
+          </div>
+          <div class="signup-text">
+            <p>Don't have an account? <a href="#">Sign-Up</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="forgot-pass-screen" id="forgotPasswordScreen">
+        <img src="logo.jpg" alt="PCC RecruitHub Logo" class="logo-img">
+        <h1 class="system-title">PCC RecruitHub</h1>
+        <div class="form-card">
+          <label class="form-label">Email</label>
+          <input type="email" id="forgot-email" class="form-input">
+          <div class="button-row-2">
+            <button class="form-btn back-btn" onclick="goBack()">Back</button>
+            <button class="form-btn reset-btn" onclick="SendResetLink()">Send Reset Link</button>
+          </div>
+        </div>
+      </div>
+      <div class="change-pass-screen" id="changePasswordScreen">
+        <img src="logo.jpg" alt="PCC RecruitHub Logo" class="logo-img">
+        <h1 class="system-title">PCC RecruitHub</h1>
+        <div class="form-card">
+          <label class="form-label">New Password</label>
+          <input type="password" id="new-password" class="form-input">
+          <label class="form-label">Confirm Password</label>
+          <input type="password" id="confirm-password" class="form-input">
+          <div class="button-row-2">
+            <button class="form-btn back-btn" onclick="goBack()">Cancel</button>
+            <button class="form-btn reset-btn" onclick="ChangePassword()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="applicant-page-container" id="applicantDashboard">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="logo_again.png" alt="Logo" class="logo-icon">
+        <div>
+          <span><b>PCC RecruitHub</b></span>
+          <small>APPLICANT</small>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" id="applicant-nav-home" onclick="showApplicantTab('home'); return false;">
+          <img src="icon-home.png" alt="" class="nav-icon">HOME</a>
+        <a href="#" class="nav-item" id="applicant-nav-vacancies" onclick="showApplicantTab('vacancies'); return false;">
+          <img src="icon-job.png" alt="" class="nav-icon">JOB VACANCIES</a>
+        <a href="#" class="nav-item" id="applicant-nav-applications" onclick="showApplicantTab('applications'); return false;">
+          <img src="icon-application.png" alt="" class="nav-icon">MY APPLICATIONS</a>
+        <a href="#" class="nav-item" id="applicant-nav-documents" onclick="showApplicantTab('documents'); return false;">
+          <img src="icon-documents.png" alt="" class="nav-icon">DOCUMENTS</a>
+        <a href="#" class="nav-item" id="applicant-nav-notifications" onclick="showApplicantTab('notifications'); return false;">
+          <img src="icon-notification.png" alt="" class="nav-icon">NOTIFICATIONS</a>
+        <a href="#" class="nav-item" id="applicant-nav-profile" onclick="showApplicantTab('profile'); return false;">
+          <img src="icon-profile.png" alt="" class="nav-icon">PROFILE</a>
+      </nav>
+    </aside>
+    <main class="main-area">
+      <header class="top-bar">
+        <div class="top-right">
+          <img src="pfp.png" alt="Profile" class="profile-pic">
+          <h1>Hello, ANGELICA!</h1>
+        </div>
+        <div class="top-right">
+          <button class="logout-btn" onclick="applicantLogout()">
+            <img src="icon-logout.png" alt="" class="top-left-icon">LOG OUT</button>
+        </div>
+      </header>
+      <div class="content-gradient">
+        <div class="tab-content" id="applicant-tab-home">
+          <div class="applicant-home-grid">
+
+            <div class="app-stat-card">
+              <div class="app-stat-icon">
+                <img src="home-job-openings.png" alt="Job Openings">
+              </div>
+              <div class="app-stat-content">
+                <div class="app-stat-number">15</div>
+                <div class="app-stat-label">15 Job Openings</div>
+              </div>
+            </div>
+
+            <div class="app-stat-card">
+              <div class="app-stat-icon">
+                <img src="home-positions.png" alt="Positions Applied">
+              </div>
+              <div class="app-stat-content">
+                <div class="app-stat-number">6</div>
+                <div class="app-stat-label">6 Positions Applied</div>
+              </div>
+            </div>
+
+            <div class="app-stat-card">
+              <div class="app-stat-icon">
+                <img src="home-applicants.png" alt="Total Applicants">
+              </div>
+              <div class="app-stat-content">
+                <div class="app-stat-number">230+</div>
+                <div class="app-stat-label">Total Applicants<br>this Month</div>
+              </div>
+            </div>
+
+            <div class="app-stat-card">
+              <div class="app-stat-icon">
+                <img src="home-status.png" alt="Application Status">
+              </div>
+              <div class="app-stat-content">
+                <div class="app-stat-number">15</div>
+                <div class="app-stat-label">Application Status<br>Update</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="tab-content" id="applicant-tab-vacancies" style="display: none;">
+          <h2 class="vacancies-page-title">Job Openings</h2>
+          
+          <div class="vacancies-grid">
+            <!-- ROW 1 -->
+            <div class="job-card">
+              <h3 class="job-title">School Nurse</h3>
+              <p class="job-dept">Clinic Dept.</p>
+              <div class="job-status-row">
+                <span class="status-label">Status:</span>
+                <span class="status-badge-active">Active</span>
+              </div>
+              <div class="job-buttons">
+                <button class="btn-apply">Apply Now</button>
+                <button class="btn-save">Save</button>
+              </div>
+            </div>
+            
+            <div class="job-card">
+              <h3 class="job-title">Security Guard</h3>
+              <p class="job-dept">Security Dept.</p>
+              <div class="job-status-row">
+                <span class="status-label">Status:</span>
+                <span class="status-badge-active">Active</span>
+              </div>
+              <div class="job-buttons">
+                <button class="btn-apply">Apply Now</button>
+                <button class="btn-save">Save</button>
+              </div>
+            </div>
+            
+            <div class="job-card">
+              <h3 class="job-title">Sports Coach</h3>
+              <p class="job-dept">Athletics Dept.</p>
+              <div class="job-status-row">
+                <span class="status-label">Status:</span>
+                <span class="status-badge-active">Active</span>
+              </div>
+              <div class="job-buttons">
+                <button class="btn-apply">Apply Now</button>
+                <button class="btn-save">Save</button>
+              </div>
+            </div>
+            
+            <!-- ROW 2 -->
+            <div class="job-card">
+              <h3 class="job-title">Registrar Staff</h3>
+              <p class="job-dept">Admin Dept.</p>
+              <div class="job-status-row">
+                <span class="status-label">Status:</span>
+                <span class="status-badge-active">Active</span>
+              </div>
+              <div class="job-buttons">
+                <button class="btn-apply">Apply Now</button>
+                <button class="btn-save">Save</button>
+              </div>
+            </div>
+            
+            <div class="job-card">
+              <h3 class="job-title">JHS Math Teacher</h3>
+              <p class="job-dept">JHS Dept.</p>
+              <div class="job-status-row">
+                <span class="status-label">Status:</span>
+                <span class="status-badge-active">Active</span>
+              </div>
+              <div class="job-buttons">
+                <button class="btn-apply">Apply Now</button>
+                <button class="btn-save">Save</button>
+              </div>
+            </div>
+            
+            <div class="job-card">
+              <h3 class="job-title">Accounting Staff</h3>
+              <p class="job-dept">Finance Dept.</p>
+              <div class="job-status-row">
+                <span class="status-label">Status:</span>
+                <span class="status-badge-closed">Closed</span>
+              </div>
+              <div class="job-buttons">
+                <button class="btn-apply applied" disabled>Apply Now</button>
+                <button class="btn-save">Save</button>
+              </div>
+            </div>
+            
+            <!-- ROW 3 -->
+            <div class="job-card">
+              <h3 class="job-title">Utility Staff</h3>
+              <p class="job-dept">Facilities Dept.</p>
+              <div class="job-status-row">
+                <span class="status-label">Status:</span>
+                <span class="status-badge-active">Active</span>
+              </div>
+              <div class="job-buttons">
+                <button class="btn-apply">Apply Now</button>
+                <button class="btn-save">Save</button>
+              </div>
+            </div>
+            
+            <div class="job-card">
+              <h3 class="job-title">SHS STEM Teacher</h3>
+              <p class="job-dept">SHS Dept.</p>
+              <div class="job-status-row">
+                <span class="status-label">Status:</span>
+                <span class="status-badge-closed">Closed</span>
+              </div>
+              <div class="job-buttons">
+                <button class="btn-apply applied" disabled>Apply Now</button>
+                <button class="btn-save">Save</button>
+              </div>
+            </div>
+            
+            <div class="job-card">
+              <h3 class="job-title">Maintenance Worker</h3>
+              <p class="job-dept">Facilities Dept.</p>
+              <div class="job-status-row">
+                <span class="status-label">Status:</span>
+                <span class="status-badge-closed">Closed</span>
+              </div>
+              <div class="job-buttons">
+                <button class="btn-apply applied" disabled>Apply Now</button>
+                <button class="btn-save">Save</button>
+              </div>
+            </div>
+            
+            <!-- ROW 4 -->
+            <div class="job-card">
+              <h3 class="job-title">College IT Instructor</h3>
+              <p class="job-dept">College Dept.</p>
+              <div class="job-status-row">
+                <span class="status-label">Status:</span>
+                <span class="status-badge-active">Active</span>
+              </div>
+              <div class="job-buttons">
+                <button class="btn-apply">Apply Now</button>
+                <button class="btn-save">Save</button>
+              </div>
+            </div>
+            
+            <div class="job-card">
+              <h3 class="job-title">College Education Instructor</h3>
+              <p class="job-dept">College Dept.</p>
+              <div class="job-status-row">
+                <span class="status-label">Status:</span>
+                <span class="status-badge-active">Active</span>
+              </div>
+              <div class="job-buttons">
+                <button class="btn-apply">Apply Now</button>
+                <button class="btn-save">Save</button>
+              </div>
+            </div>
+            
+            <div class="job-card">
+              <h3 class="job-title">HR Recruitment Asst.</h3>
+              <p class="job-dept">HRMO Dept.</p>
+              <div class="job-status-row">
+                <span class="status-label">Status:</span>
+                <span class="status-badge-closed">Closed</span>
+              </div>
+              <div class="job-buttons">
+                <button class="btn-apply applied" disabled>Apply Now</button>
+                <button class="btn-save">Save</button>
+              </div>
+            </div>
+            
+            <!-- ROW 5 -->
+            <div class="job-card">
+              <h3 class="job-title">Grade School Teacher</h3>
+              <p class="job-dept">Grade School Dept.</p>
+              <div class="job-status-row">
+                <span class="status-label">Status:</span>
+                <span class="status-badge-closed">Closed</span>
+              </div>
+              <div class="job-buttons">
+                <button class="btn-apply applied" disabled>Apply Now</button>
+                <button class="btn-save">Save</button>
+              </div>
+            </div>
+            
+            <div class="job-card">
+              <h3 class="job-title">Guidance Counselor</h3>
+              <p class="job-dept">Student Affairs Dept.</p>
+              <div class="job-status-row">
+                <span class="status-label">Status:</span>
+                <span class="status-badge-active">Active</span>
+              </div>
+              <div class="job-buttons">
+                <button class="btn-apply">Apply Now</button>
+                <button class="btn-save">Save</button>
+              </div>
+            </div>
+            
+            <div class="job-card">
+              <h3 class="job-title">SHS TVL Teacher</h3>
+              <p class="job-dept">SHS Dept.</p>
+              <div class="job-status-row">
+                <span class="status-label">Status:</span>
+                <span class="status-badge-closed">Closed</span>
+              </div>
+              <div class="job-buttons">
+                <button class="btn-apply applied" disabled>Apply Now</button>
+                <button class="btn-save">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="applicant-tab-applications" style="display: none;">
+          <h2>Applications</h2>
+          <p>Your submitted applications and status updates.</p>
+        </div>
+        <div class="tab-content" id="applicant-tab-documents" style="display: none;">
+          <h2>Documents</h2>
+          <p>Upload and manage your requirements here.</p>
+        </div>
+        <div class="tab-content" id="applicant-tab-notifications" style="display: none;">
+          <h2>Notifications</h2>
+          <p>Alerts and messages from the system.</p>
+        </div>
+        <div class="tab-content" id="applicant-tab-profile" style="display: none;">
+          <h2>My Profile</h2>
+          <p>Update your personal information here.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="admin-page-container" id="adminDashboard">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="logo_again.png" alt="Logo" class="logo-icon">
+        <div>
+          <span><b>PCC RecruitHub</b></span>
+          <small>ADMIN</small>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" id="admin-nav-dashboard" onclick="showAdminTab('dashboard'); return false;">
+          <img src="icon-home.png" alt="" class="nav-icon">DASHBOARD</a>
+        <a href="#" class="nav-item" id="admin-nav-management" onclick="showAdminTab('management'); return false;">
+          <img src="icon-job.png" alt="" class="nav-icon">POSITION MANAGEMENT</a>
+        <a href="#" class="nav-item" id="admin-nav-applicants" onclick="showAdminTab('applicants'); return false;">
+          <img src="icon-application.png" alt="" class="nav-icon">APPLICANTS</a>
+        <a href="#" class="nav-item" id="admin-nav-interviews" onclick="showAdminTab('interviews'); return false;">
+          <img src="icon-documents.png" alt="" class="nav-icon">INTERVIEWS</a>
+        <a href="#" class="nav-item" id="admin-nav-notifications" onclick="showAdminTab('notifications'); return false;">
+          <img src="icon-notification.png" alt="" class="nav-icon">NOTIFICATIONS</a>
+        <a href="#" class="nav-item" id="admin-nav-profile" onclick="showAdminTab('profile'); return false;">
+          <img src="icon-profile.png" alt="" class="nav-icon">PROFILE</a>
+      </nav>
+    </aside>
+    <main class="main-area">
+      <header class="top-bar">
+        <div class="top-right">
+          <h1>Hello, ROXANNE!</h1>
+        </div>
+        <div class="top-right">
+          <button class="logout-btn" onclick="adminLogout()">
+            <img src="icon-logout.png" alt="" class="top-left-icon">LOG OUT</button>
+        </div>
+      </header>
+      <div class="content-gradient">
+        <div class="tab-content" id="admin-tab-dashboard">
+          <h2>ADMIN DASHBOARD</h2>
+
+          <div class="stats-row">
+            <div class="stat-card">
+              <h3>TOTAL JOB POSITIONS</h3>
+              <p class="big-number" id="totalPositions">12</p>
+              <div class="card-footer">
+                <span class="trend">+2 this week</span>
+                <a class="trend">Manage</a>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <h3>TOTAL APPLICANTS</h3>
+              <p class="big-number" id="totalApplicants">1,067</p>
+              <div class="card-footer">
+                <span class="trend">+13 New Today</span>
+                <a class="trend">Search</a>
+              </div>
+            </div>
+            
+            <div class="stat-card">
+              <h3>UPCOMING INTERVIEWS</h3>
+              <p class="big-number" id="totalInterviews">5</p>
+              <div class="card-footer">
+                <span class="trend">Next one in 30 mins</span>
+                <a class="trend">Schedule</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-content-wrapper">
+            <div class="left-tables-column">
+              <div class="table-wrapper">
+                <div class="table-top-header"><b>JOB POSITIONS MANAGEMENT</b></div>
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Available Positions</th>
+                      <th>Required Docs</th>
+                      <th>Deadlines</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Nurse</td>
+                      <td></td>
+                      <td>Oct 17, 2026</td>
+                      <td>
+                        <button class="btn-edit">Edit</button>
+                        <button class="btn-archive">Archive</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Psychometrician</td>
+                      <td></td>
+                      <td>Oct 20, 2026</td>
+                      <td>
+                        <button class="btn-edit">Edit</button>
+                        <button class="btn-archive">Archive</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>SHS Teacher</td>
+                      <td></td>
+                      <td>Oct 23, 2026</td>
+                      <td>
+                        <button class="btn-edit">Edit</button>
+                        <button class="btn-archive">Archive</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="4">
+                        <button class="btn-view-more" onclick=viewPos()>VIEW MORE</button>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+              
+              <div class="table-wrapper">
+                <div class="table-top-header"><b>RECENT APPLICANTS LIST</b></div>
+
+                <div class="filter-bar">
+                  <div class="filter-group">
+                    <label>SEARCH</label>
+                    <input type="text" placeholder="Name/Email" class="search-input">
+                  </div>
+                  <div class="filter-group">
+                    <label>STATUS</label>
+                    <div class="status-select">
+                    <select class="status-select">
+                      <option>All</option>
+                    </select>
+                    <select class="status-select">
+                      <option>Screening</option>
+                    </select>
+                    <select class="status-select">
+                      <option>Interviewed</option>
+                    </select>
+                    </div>
+                  </div>
+                </div>
+
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Applicant</th>
+                      <th>Application Date</th>
+                      <th>Desired Position</th>
+                      <th style="text-align: center;">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Maria Patricia Lovindino</td>
+                      <td>Aug 27, 2025</td>
+                      <td></td>
+                      <td><span class="status-badge">Screening</span></td>
+                      <td><button class="btn-details">Applicant Details</button></td>
+                    </tr>
+                    <tr>
+                      <td>Niekeaela Gumbilla</td>
+                      <td>Dec 14, 2024</td>
+                      <td></td>
+                      <td><span class="status-badge">Screening</span></td>
+                      <td><button class="btn-details">Applicant Details</button></td>
+                    </tr>
+                    <tr>
+                      <td>Camille Jore Camilo</td>
+                      <td>May 22, 2024</td>
+                      <td></td>
+                      <td><span class="status-badge">Screening</span></td>
+                      <td><button class="btn-details">Applicant Details</button></td>
+                    </tr>
+                    <tr>
+                      <td>Jovic Romero</td>
+                      <td>Oct 23, 2025</td>
+                      <td></td>
+                      <td><span class="status-badge">Screening</span></td>
+                      <td><button class="btn-details">Applicant Details</button></td>
+                    </tr>
+                    <tr>
+                      <td>Angelica Rose</td>
+                      <td>Sept 7, 2026</td>
+                      <td></td>
+                      <td><span class="status-badge">Screening</span></td>
+                      <td><button class="btn-details">Applicant Details</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <div class="right-sidebar-column">
+              <h3>INTERVIEWS & SCREENING OVERVIEWS</h3>
+              <div class="calendar-section">
+              <div class="calendar-header">November 2026</div>
+                
+              <div class="calendar-days-header">
+                <span>SUN</span><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span>
+              </div>
+                
+              <div class="calendar-dates">
+                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
+                <span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span>
+                <span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span>
+                <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span>
+                <span>29</span><span>30</span><span>31</span>
+              </div>
+            </div>
+            
+            <div class="interviews">
+              <div class="interview-item">
+                <!-- Red date box -->
+                <div class="interview-date">NOV 3</div>
+                
+                <!-- Text section -->
+                <div class="interview-text">
+                  <h4>INTERVIEW</h4>
+                  <p>Ms. Maria Lovindino</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="interviews">
+              <div class="interview-item">
+                <div class="interview-date">NOV 6</div>
+                <div class="interview-text">
+                  <h4>INTERVIEW</h4>
+                  <p>Ms. Niekeaela Gumbilla</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="interviews">
+              <div class="interview-item">
+                <div class="interview-date">NOV 7</div>
+                <div class="interview-text">
+                  <h4>INTERVIEW</h4>
+                  <p>Ms. Camille Camilo</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="content-gradient">
+        <div class="tab-content" id="admin-tab-management">
+          <h2>JOB POSITIONS MANAGEMENT</h2>
+          
+          <div class="pos-grid-layout">
+            <div class="pos-left-col">
+              <div class="table-wrapper">
+                <div class="table-top-header">AVAILABLE JOB POSITIONS</div>
+                <table class="pos-table">
+                  <thead>
+                    <tr>
+                      <th>JOB TITLE</th>
+                      <th>STATUS</th>
+                      <th>EDIT</th>
+                      <th>DELETE</th>
+                      <th>ARCHIVE</th>
+                    </tr>
+                  </thead>
+                  <tbody id="posTableBody"></tbody>
+                </table>
+                <button class="btn-add-pos" onclick="openAddForm()">+ ADD NEW POSITION</button>
+              </div>
+              
+              <div class="table-wrapper">
+                <div class="table-top-header">POSITION OPERATIONS & HISTORY</div>
+                <div class="history-search-bar">
+                  <input type="text" class="history-search-input" placeholder="🔍 Search...">
+                </div>
+                <div class="history-tabs">
+                  <button class="hist-tab active" onclick="showHistoryTab('all')">All Positions</button>
+                  <button class="hist-tab" onclick="showHistoryTab('archived')">ARCHIVED</button>
+                </div>
+                <div class="history-content">
+                  <div id="history-all">
+                    <h4 class="history-log-title">Status change log</h4>
+                    <table class="log-table">
+                      <tr><th>Entry Time</th><th>Status</th><th>Changed by</th></tr>
+                      <tr><td>3-18-2025 09:35:30</td><td>Draft</td><td>HR Admin</td></tr>
+                      <tr><td>06-07-2025 08:06:17 PM</td><td>Posted</td><td>HR Admin</td></tr>
+                      <tr><td>09-19-2025 09:35:30 AM</td><td>Archived</td><td>HR Admin</td></tr>
+                      <tr><td>12-12-2025 09:35:30 AM</td><td>Closed</td><td>HR Manager</td></tr>
+                    </table>
+                  </div>
+                  <div id="history-archived" style="display:none;">
+                    <p style="color:#888;">No archived positions yet.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="pos-right-col">
+              <div class="form-card">
+                <h3 class="form-card-title">CREATE / EDIT POSITION</h3>
+                
+                <label>Job Title</label>
+                <input type="text" id="formJobTitle" placeholder="Job Title">
+                
+                <label>Department</label>
+                <input type="text" id="formDept" placeholder="Department">
+                
+                <label>Description</label>
+                <textarea id="formDesc" placeholder="Description"></textarea>
+                
+                <h4 class="sub-heading">SET REQUIREMENTS</h4>
+                <textarea id="formReq" placeholder="Add requirement"></textarea>
+                
+                <h4 class="sub-heading">SET DEADLINES</h4>
+                <input type="date" id="deadlineInput" style="width:100%; padding:0.7rem; border:none; border-radius:4px; margin-top:0.5rem;">
+                
+                <div class="form-buttons">
+                  <button class="btn-save-changes" onclick="savePosition()">SAVE CHANGES</button>
+                  <button class="btn-clear-form" onclick="clearForm()">CLEAR FORM</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="tab-content" id="admin-tab-applicants" style="display:none">
+          <div class="applicant-grid-layout">
+            <!-- LEFT: Full Table -->
+            <div class="applicant-table-wrapper" style="background: transparent; box-shadow: none;">
+              <input type="text" class="applicant-search-box" placeholder="🔍 Search...">
+              
+              <div class="applicant-full-table-wrapper">
+                <table class="applicant-full-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>APPLICANT NAME</th>
+                      <th>POSITION APPLIED</th>
+                      <th>APPLY DATE</th>
+                      <th class="status-header">CURRENT STATUS</th>
+                    </tr>
+                  </thead>
+                  <tbody id="applicantTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+            
+            <!-- RIGHT: Profile Card -->
+            <div class="applicant-profile-card">
+              <div class="profile-top-row">
+                <img src="pfp.png" class="profile-avatar" id="selectedAvatar" alt="Profile">
+                <div class="profile-info">
+                  <h3 id="selectedName">Angelica V. Rose</h3>
+                  <p class="profile-id" id="selectedId">Applicant ID: APP 199</p>
+                </div>
+              </div>
+              
+              <div class="status-section">
+                <h4>APPLICANT STATUS</h4>
+                <div class="status-bar-pending">Pending</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="admin-tab-interviews" style="display:none">
+          <h2>Interviews</h2>
+          <p>Upload and manage your requirements here.</p>
+        </div>
+        <div class="tab-content" id="admin-tab-notifications" style="display:none">
+          <h2>Notifications</h2>
+          <p>Alerts and messages from the system.</p>
+        </div>
+        <div class="tab-content" id="admin-tab-profile" style="display:none">
+          <h2>My Profile</h2>
+          <p>Update your personal information here.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <script>
+    function goToLogin() {
+      document.getElementById('homePage').style.display = 'none';
+      document.getElementById('loginWrapper').style.display = 'flex';
+      document.querySelector('.left-bg').style.display = 'block';
+      document.querySelector('.right-overlay').style.display = 'flex';
+      document.getElementById('selectionScreen').style.display = 'flex';
+      document.getElementById('applicantFormScreen').style.display = 'none';
+      document.getElementById('adminFormScreen').style.display = 'none';
+      document.getElementById('forgotPasswordScreen').style.display = 'none';
+      document.getElementById('changePasswordScreen').style.display = 'none';
+    }
+    function showAdminForm() {
+      document.getElementById('selectionScreen').style.display = 'none';
+      document.getElementById('applicantFormScreen').style.display = 'none';
+      document.getElementById('adminFormScreen').style.display = 'flex';
+      document.getElementById('forgotPasswordScreen').style.display = 'none';
+      document.getElementById('changePasswordScreen').style.display = 'none';
+    }
+    function showApplicantForm() {
+      document.getElementById('selectionScreen').style.display = 'none';
+      document.getElementById('applicantFormScreen').style.display = 'flex';
+      document.getElementById('adminFormScreen').style.display = 'none';
+      document.getElementById('forgotPasswordScreen').style.display = 'none';
+      document.getElementById('changePasswordScreen').style.display = 'none';
+    }
+    function goBack() {
+      document.getElementById('selectionScreen').style.display = 'flex';
+      document.getElementById('applicantFormScreen').style.display = 'none';
+      document.getElementById('adminFormScreen').style.display = 'none';
+      document.getElementById('forgotPasswordScreen').style.display = 'none';
+      document.getElementById('changePasswordScreen').style.display = 'none';
+    }
+    function applicantLogout() {
+      document.getElementById('applicantDashboard').style.display = 'none';
+      document.getElementById('loginWrapper').style.display = 'flex';
+      goBack();
+    }
+    function adminLogout() {
+      document.getElementById('adminDashboard').style.display = 'none';
+      document.getElementById('loginWrapper').style.display = 'flex';
+      goBack();
+    }
+    const valid_admin = "Roxanne Era N. Exiomo";
+    const valid_admin_email = "roxanneexiomo67@gmail.com";
+    const valid_password = "admin123";
+    
+    function LoginAdmin() {
+      const fullname = document.getElementById('admin-fullname').value;
+      const email = document.getElementById('admin-email').value;
+      const password = document.getElementById('admin-password').value;
+      if (fullname === valid_admin && email === valid_admin_email && password === valid_password) {
+        alert("Admin login successful!");
+        document.getElementById('loginWrapper').style.display = 'none';
+        document.getElementById('adminDashboard').style.display = 'flex';
+        showAdminTab('dashboard');
+      } else {
+        alert("Invalid admin credentials. Please try again.");
+      }
+    }
+    const valid_applicant = "Angelica V. Rose";
+    const valid_applicant_email = "roseangelica381@gmail.com";
+    const valid_applicant_password = "applicant123";
+    
+    function LoginApplicant() {
+      const fullname = document.getElementById('applicant-fullname').value;
+      const email = document.getElementById('applicant-email').value;
+      const password = document.getElementById('applicant-password').value;
+      if (fullname === valid_applicant && email === valid_applicant_email && password === valid_applicant_password) {
+        alert("Applicant login successful!");
+        document.getElementById('loginWrapper').style.display = 'none';
+        document.getElementById('applicantDashboard').style.display = 'flex';
+      } else {
+        alert("Invalid applicant credentials. Please try again.");
+      }
+    }
+    function ForgotPassword() {
+      document.getElementById('selectionScreen').style.display = 'none';
+      document.getElementById('applicantFormScreen').style.display = 'none';
+      document.getElementById('adminFormScreen').style.display = 'none';
+      document.getElementById('forgotPasswordScreen').style.display = 'flex';
+      document.getElementById('changePasswordScreen').style.display = 'none';
+    }
+    
+    const valid_emails = [valid_admin_email, valid_applicant_email];
+    
+    function SendResetLink() {
+      const email = document.getElementById('forgot-email').value;
+      if (valid_emails.includes(email)) {
+        alert("Password reset link sent! Please check your email.");
+        document.getElementById('forgotPasswordScreen').style.display = 'none';
+        document.getElementById('changePasswordScreen').style.display = 'flex';
+      } else {
+        alert("This email is not registered.");
+      }
+    }
+    
+    function ChangePassword() {
+      const newPassword = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      if (newPassword && confirmPassword) {
+        if (newPassword === confirmPassword) {
+          alert("Password changed successfully!");
+          goBack();
+        } else {
+          alert("Passwords do not match. Please try again.");
+        }
+      } else {
+        alert("Please fill in both password fields.");
+      }
+    }
+    function showApplicantTab(tabName) {
+      document.getElementById('applicant-tab-home').style.display = 'none';
+      document.getElementById('applicant-tab-vacancies').style.display = 'none';
+      document.getElementById('applicant-tab-applications').style.display = 'none';
+      document.getElementById('applicant-tab-documents').style.display = 'none';
+      document.getElementById('applicant-tab-notifications').style.display = 'none';
+      document.getElementById('applicant-tab-profile').style.display = 'none';
+      document.getElementById('applicant-nav-home').classList.remove('active');
+      document.getElementById('applicant-nav-vacancies').classList.remove('active');
+      document.getElementById('applicant-nav-applications').classList.remove('active');
+      document.getElementById('applicant-nav-documents').classList.remove('active');
+      document.getElementById('applicant-nav-notifications').classList.remove('active');
+      document.getElementById('applicant-nav-profile').classList.remove('active');
+      document.getElementById('applicant-tab-' + tabName).style.display = 'block';
+      document.getElementById('applicant-nav-' + tabName).classList.add('active');
+    }
+    function showAdminTab(tabName) {
+      document.getElementById('admin-tab-dashboard').style.display = 'none';
+      document.getElementById('admin-tab-management').style.display = 'none';
+      document.getElementById('admin-tab-applicants').style.display = 'none';
+      document.getElementById('admin-tab-interviews').style.display = 'none';
+      document.getElementById('admin-tab-notifications').style.display = 'none';
+      document.getElementById('admin-tab-profile').style.display = 'none';
+      document.getElementById('admin-nav-dashboard').classList.remove('active');
+      document.getElementById('admin-nav-management').classList.remove('active');
+      document.getElementById('admin-nav-applicants').classList.remove('active');
+      document.getElementById('admin-nav-interviews').classList.remove('active');
+      document.getElementById('admin-nav-notifications').classList.remove('active');
+      document.getElementById('admin-nav-profile').classList.remove('active');
+      document.getElementById('admin-tab-' + tabName).style.display = 'block';
+      document.getElementById('admin-nav-' + tabName).classList.add('active');
+      
+      if (tabName === 'management') {
+        displayPositions();
+        displayArchived();
+      }
+      if (tabName === 'applicants') {
+        displayApplicants();
+      }
+    }
+    
+    var savedPositions = localStorage.getItem("pcc_positions_db");
+    var positions;
+    if (savedPositions == null) {
+      positions = [
+        {
+          title: "Payroll Clerk",
+          department: "Finance",
+          status: "Active",
+          description: "Manages daily employee payment processes and payroll records.",
+          requirements: "Resume, Application Letter, BSA/Accounting Diploma",
+          deadline: "2026-11-15"
+        },
+        {
+          title: "Administrative Assistant",
+          department: "Admin",
+          status: "Active",
+          description: "Supports daily office operations and schedules.",
+          requirements: "Resume, Application Letter",
+          deadline: "2026-11-18"
+        },
+        {
+          title: "HR Supervisor",
+          department: "HR",
+          status: "Active",
+          description: "Oversees hiring, onboarding, and staff management.",
+          requirements: "Resume, Application Letter, HR Experience Certificate",
+          deadline: "2026-11-20"
+        },
+        {
+          title: "Training Manager",
+          department: "Training",
+          status: "Active",
+          description: "Plans, organizes, and leads staff training programs.",
+          requirements: "Resume, Application Letter, Training Portfolio",
+          deadline: "2026-11-22"
+        },
+        {
+          title: "HR Information System Analyst",
+          department: "IT",
+          status: "Active",
+          description: "Manages and maintains HR digital systems and databases.",
+          requirements: "Resume, Application Letter, IT/CS Diploma",
+          deadline: "2026-11-25"
+        }
+      ];
+      localStorage.setItem("pcc_positions_db", JSON.stringify(positions));
+    } else {
+      positions = JSON.parse(savedPositions);
+    }
+    var editIndex = -1;
+    
+    function displayPositions() {
+      var table = "";
+      for (var i = 0; i < positions.length; i++) {
+        table += "<tr>";
+        table += "<td>" + positions[i].title + "</td>";
+        table += "<td><button class='btn-status-active'>" + positions[i].status + "</button></td>";
+        table += "<td><button class='btn-edit' onclick='editPosition(" + i + ")'>Edit</button></td>";
+        table += "<td><button class='btn-delete' onclick='deletePosition(" + i + ")'>Delete</button></td>";
+        table += "<td><button class='btn-archive' onclick='archivePosition(" + i + ")'>Archive</button></td>";
+        table += "</tr>";
+      }
+      document.getElementById("posTableBody").innerHTML = table;
+    }
+    
+    function openAddForm() {
+      editIndex = -1;
+      clearForm();
+    }
+    
+    function editPosition(index) {
+      editIndex = index;
+      
+      document.getElementById("formJobTitle").value = positions[index].title;
+      document.getElementById("formDept").value = positions[index].department;
+      document.getElementById("formDesc").value = positions[index].description || "";
+      document.getElementById("formReq").value = positions[index].requirements || "";
+      document.getElementById("deadlineInput").value = positions[index].deadline || "";
+    }
+    
+    function savePosition() {
+      var title = document.getElementById("formJobTitle").value;
+      var dept = document.getElementById("formDept").value;
+      var desc = document.getElementById("formDesc").value;
+      var req = document.getElementById("formReq").value;
+      var deadline = document.getElementById("deadlineInput").value;
+      
+      if (!title || !dept || !desc || !req) {
+        alert("Please fill in all fields.");
+        return;
+      }
+      
+      if (editIndex === -1) {
+        positions.push({
+          title: title,
+          department: dept,
+          description: desc,
+          requirements: req,
+          status: "Active",
+          deadline: deadline
+        });
+      } else {
+        positions[editIndex].title = title;
+        positions[editIndex].department = dept;
+        positions[editIndex].description = desc;
+        positions[editIndex].requirements = req;
+        positions[editIndex].deadline = deadline;
+        editIndex = -1;
+      }
+      
+      localStorage.setItem("pcc_positions_db", JSON.stringify(positions));
+      displayPositions();
+      clearForm();
+      alert("Position saved successfully! ✅");
+    }
+    
+    function clearForm() {
+      editIndex = -1;
+      document.getElementById("formJobTitle").value = "";
+      document.getElementById("formDept").value = "";
+      document.getElementById("formDesc").value = "";
+      document.getElementById("formReq").value = "";
+      document.getElementById("deadlineInput").value = "";
+    }
+    
+    function deletePosition(index) {
+      if (confirm("Are you sure you want to delete this position?")) {
+        positions.splice(index, 1);
+        localStorage.setItem("pcc_positions_db", JSON.stringify(positions));
+        displayPositions();
+      }
+    }
+    
+    var savedArchived = localStorage.getItem("pcc_archived_db");
+    var archived = [];
+    if (savedArchived != null) {
+      archived = JSON.parse(savedArchived);
+    }
+    
+    function archivePosition(index) {
+      archived.push(positions[index]);
+      positions.splice(index, 1);
+      
+      localStorage.setItem("pcc_positions_db", JSON.stringify(positions));
+      localStorage.setItem("pcc_archived_db", JSON.stringify(archived));
+      
+      displayPositions();
+      displayArchived();
+    }
+    
+    function displayArchived() {
+      var list = "";
+      for (var i = 0; i < archived.length; i++) {
+        list += "<p style='padding:0.5rem 0; border-bottom:1px solid #eee;'>";
+        list += "<strong>" + archived[i].title + "</strong> — " + (archived[i].department || "No Department");
+        list += " <button class='btn-unarchive' onclick='unarchivePosition(" + i + ")'>Unarchive</button>";
+        list += "</p>";
+      }
+      var archivedDiv = document.getElementById("history-archived");
+      if (archivedDiv) {
+        archivedDiv.innerHTML = list || "<p style='color:#888;'>No archived positions yet.</p>";
+      }
+    }
+    
+    function unarchivePosition(index) {
+      positions.push(archived[index]);
+      archived.splice(index, 1);
+      
+      localStorage.setItem("pcc_positions_db", JSON.stringify(positions));
+      localStorage.setItem("pcc_archived_db", JSON.stringify(archived));
+      
+      displayPositions();
+      displayArchived();
+    }
+
+    function showHistoryTab(tabName) {
+      var tabs = document.querySelectorAll('.hist-tab');
+      tabs.forEach(tab => tab.classList.remove('active'));
+      
+      event.target.classList.add('active');
+      
+      document.getElementById('history-all').style.display = 'none';
+      document.getElementById('history-archived').style.display = 'none';
+      
+      if (tabName === 'all') {
+        document.getElementById('history-all').style.display = 'block';
+      } else {
+        displayArchived();
+        document.getElementById('history-archived').style.display = 'block';
+      }
+    }
+    
+    var savedApplicants = localStorage.getItem("pcc_applicants_db");
+    var applicants;
+    if (savedApplicants == null) {
+      applicants = [
+        {id: "067", name: "Sophia Salamila", position: "Admissions Officer", date: "Oct 8, 2025", status: "Pending"},
+        {id: "135", name: "Maria Lovindino", position: "School Nurse", date: "Aug 27, 2025", status: "Pending"},
+        {id: "162", name: "Niekaella Gumbila", position: "College Professor", date: "Dec 27, 2026", status: "Pending"},
+        {id: "107", name: "Camille Camilo", position: "Registrar Staff", date: "May 22, 2024", status: "Pending"},
+        {id: "143", name: "Genevieve Maniac", position: "Cashier", date: "Mar 17, 2025", status: "Pending"},
+        {id: "101", name: "Elene Velez", position: "Accounting Staff", date: "Jan 20, 2025", status: "Pending"},
+        {id: "094", name: "Jovic Romero", position: "Guidance Counselor", date: "Oct 23, 2024", status: "Pending"},
+        {id: "151", name: "Steffy Gumbila", position: "JHS Teacher", date: "Apr 01, 2024", status: "Pending"},
+        {id: "102", name: "Kyree Pangantion", position: "Student Nurse", date: "Jul 06, 2026", status: "Pending"},
+        {id: "109", name: "Princess Arandia", position: "MAPEH Teacher", date: "Nov 11, 2025", status: "Pending"},
+        {id: "156", name: "Anne Capistrano", position: "College Professor", date: "Feb 18, 2026", status: "Pending"},
+        {id: "199", name: "Angelica Rose", position: "IT Staff", date: "June 5, 2025", status: "Pending"},
+        {id: "078", name: "Myles Esgana", position: "Psychometrician", date: "Sept 19, 2025", status: "Pending"}
+      ];
+      localStorage.setItem("pcc_applicants_db", JSON.stringify(applicants));
+    } else {
+      applicants = JSON.parse(savedApplicants);
+    }
+    
+    function displayApplicants() {
+      var table = "";
+      for (var i = 0; i < applicants.length; i++) {
+        table += "<tr>";
+        table += "<td>" + applicants[i].id + "</td>";
+        table += "<td>" + applicants[i].name + "</td>";
+        table += "<td>" + applicants[i].position + "</td>";
+        table += "<td class='date-col'>" + applicants[i].date + "</td>";
+        table += "<td class='status-buttons-col'>";
+        table += "<button class='btn-edit-yellow'>Edit</button>";
+        table += "<button class='btn-details-green' onclick='showDetails(" + i + ")'>View Details</button>";
+        table += "</td>";
+        table += "</tr>";
+      }
+      document.getElementById("applicantTableBody").innerHTML = table;
+    }
+    
+    function showDetails(index) {
+      var app = applicants[index];
+      document.getElementById("selectedName").innerText = app.name;
+      document.getElementById("selectedId").innerText = "Applicant ID: " + app.id;
+    }
+    
+    showAdminTab('dashboard');
+</script>
+</body>
+</html>
